@@ -1,0 +1,22 @@
+.user-card {
+  display: grid;
+  gap: 8px;
+  padding: 12px;
+  border-radius: 12px;
+  background: var(--card);   /* 🔹 тёмный фон */
+  border: 1px solid var(--line);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.3);
+}
+
+.user-card__name {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--fg);          /* светлый текст */
+}
+
+.user-card__line {
+  margin: 0;
+  font-size: 14px;
+  color: var(--muted);       /* немного приглушённый */
+}
