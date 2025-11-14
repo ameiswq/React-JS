@@ -4,6 +4,7 @@ import Home from "./pages/Home/Home.jsx";
 import About from "./pages/About/About.jsx";
 import Items from "./pages/Items/Items.jsx";    
 import Login from "./pages/Login/Login.jsx";
+import ItemDetails from "./pages/Items/ItemDetails.jsx";
 
 export default function App() {
   return (
@@ -12,8 +13,9 @@ export default function App() {
         <Route element={<RootLayout />}>
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<About />} />
-          <Route path="/items" element={<Items />} />
+          <Route path="/users" element={<Items />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/users/:id" element={<ItemDetails />} />
         </Route>
       </Routes>
     </BrowserRouter>
