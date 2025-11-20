@@ -1,0 +1,26 @@
+/* Кнопка для выхода */
+.auth-logout-btn {
+  background-color: #1549c6;
+  color: #fff;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
+  width: 100%;
+  transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.auth-logout-btn:hover {
+  background-color: #e63946;
+  transform: translateY(-2px); /* Эффект при наведении */
+}
+
+.auth-logout-btn:active {
+  transform: translateY(0); /* Эффект при нажатии */
+}
+
+.auth-logout-btn:disabled {
+  background-color: #5c6f93;
+  cursor: not-allowed;
+}

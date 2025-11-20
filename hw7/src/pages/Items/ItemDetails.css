@@ -1,0 +1,21 @@
+.details__back {
+  margin-bottom: 12px;
+  padding: 6px 12px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: transparent;
+  color: var(--fg);
+  cursor: pointer;
+}
+
+.details__back:hover {
+  background: rgba(255,255,255,0.05);
+}
+
+.details__list {
+  list-style: none;
+  padding: 0;
+  margin: 12px 0 0;
+  display: grid;
+  gap: 6px;
+}

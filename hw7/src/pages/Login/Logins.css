@@ -1,0 +1,97 @@
+/* Основные стили для обеих форм: signup и login */
+
+.auth-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: #1e2a38;
+}
+
+.auth-card {
+  background-color: #121b2d;
+  padding: 32px;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+  width: 100%;
+  max-width: 400px;
+  color: #e7ebff;
+}
+
+.auth-card h1 {
+  text-align: center;
+  font-size: 24px;
+  margin-bottom: 16px;
+}
+
+.auth-form {
+  display: grid;
+  gap: 16px;
+}
+
+.auth-field {
+  display: flex;
+  flex-direction: column;
+}
+
+.auth-field span {
+  font-size: 14px;
+  margin-bottom: 8px;
+}
+
+.auth-input {
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid #2a356e;
+  background-color: #0f1634;
+  color: #e7ebff;
+  font-size: 14px;
+  transition: all 0.3s ease;
+}
+
+.auth-input:focus {
+  border-color: #b8c2ff;
+  outline: none;
+  background-color: #1e2738;
+}
+
+.auth-error {
+  color: #ff4d4f;
+  font-size: 12px;
+}
+
+.auth-button {
+  background-color: #1d5ae1;
+  color: #fff;
+  border: none;
+  padding: 14px;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.auth-button:hover {
+  background-color: #1549c6;
+}
+
+.auth-switch {
+  text-align: center;
+  font-size: 14px;
+}
+
+.auth-switch a {
+  color: #b8c2ff;
+  text-decoration: none;
+}
+
+.auth-switch a:hover {
+  text-decoration: underline;
+}
+
+/* Мобильная версия */
+@media (max-width: 520px) {
+  .auth-card {
+    padding: 24px;
+  }
+}
