@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
+import { useParams, useNavigate } from "react-router-dom";
 import "./ItemDetails.css";
+import { getById } from "../../services/ItemService.js";
 
 const USERS_URL = "https://jsonplaceholder.typicode.com/users";
 
@@ -8,8 +10,8 @@ export default function ItemDetails() {
   const [loading, setLoading] = useState(false);
   const [err, setErr] = useState(null);
 
-  const path = window.location.pathname;
-  const id = path.split("/").filter(Boolean).pop();
+  const { id } = useParams();
+  const navigate = useNavigate(); 
 
   useEffect(() => {
     let cancelled = false;
@@ -18,17 +20,7 @@ export default function ItemDetails() {
       try {
         setErr(null);
         setLoading(true);
-        const res = await fetch(`${USERS_URL}/${id}`);
-
-        if (!res.ok) {
-          if (res.status === 404) {
-            if (!cancelled) setUser(null);
-            return;
-          }
-          throw new Error(`HTTP ${res.status}`);
-        }
-
-        const data = await res.json();
+        const data = await getById(id);
         if (!cancelled) setUser(data);
       } catch (e) {
         if (!cancelled) setErr(e?.message || "Fetch failed");
@@ -47,7 +39,7 @@ export default function ItemDetails() {
   }, [id]);
 
   function handleBack() {
-    window.history.back();
+    navigate(-1);
   }
 
   if (loading) {
