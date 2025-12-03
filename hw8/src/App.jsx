@@ -5,6 +5,8 @@ import About from "./pages/About/About.jsx";
 import Login from "./pages/Login/Login.jsx";
 import ItemDetails from "./pages/Items/ItemDetails.jsx";
 import UsersList from "./components/UserList/UserList.jsx";
+import Signup from "./pages/SignUp/signup.jsx";
+import Profile from "./pages/Profile/Profile.jsx";
 
 export default function App() {
   return (
@@ -15,6 +17,8 @@ export default function App() {
           <Route path="/about" element={<About />} />
           <Route path="/users" element={<UsersList />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<Signup />} />
+          <Route path="/profile" element={<Profile />} />
           <Route path="/users/:id" element={<ItemDetails />} />
         </Route>
       </Routes>

@@ -50,3 +50,11 @@
   background: var(--card);
   color: var(--fg);
 }
+.nav__logout-btn {
+  background: transparent;
+  border: 1px solid #fff;
+  border-radius: 4px;
+  padding: 4px 8px;
+  color: inherit;
+  cursor: pointer;
+}

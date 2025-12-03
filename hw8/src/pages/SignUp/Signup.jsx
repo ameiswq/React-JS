@@ -1,18 +1,25 @@
 import { useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import { signInWithEmailAndPassword } from "firebase/auth";
+import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../../firebase";
 import { useAuth } from "../../contexts/AuthContext.jsx";
-import "./Login.css"; 
+import "./Signup.css"; // <-- сюда положи CSS, который ты скинула
 
-export default function Login() {
+export default function Signup() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [confirm, setConfirm] = useState("");
   const [loadingLocal, setLoadingLocal] = useState(false);
   const [error, setError] = useState(null);
 
   const navigate = useNavigate();
   const { user, loading } = useAuth();
+
+  useEffect(() => {
+    if (!loading && user) {
+      navigate("/profile");
+    }
+  }, [user, loading, navigate]);
 
   if (loading) {
     return (
@@ -24,22 +31,22 @@ export default function Login() {
     );
   }
 
-  useEffect(() => {
-    if (user) {
-      navigate("/profile");
-    }
-  }, [user, navigate]);
-
   async function handleSubmit(e) {
     e.preventDefault();
+
+    if (password !== confirm) {
+      setError("Passwords do not match.");
+      return;
+    }
+
     try {
       setError(null);
       setLoadingLocal(true);
-      await signInWithEmailAndPassword(auth, email, password);
+      await createUserWithEmailAndPassword(auth, email, password);
       navigate("/profile");
     } catch (err) {
       console.error(err);
-      setError("Failed to log in. Check your email and password.");
+      setError("Failed to sign up. Try again or use another email.");
     } finally {
       setLoadingLocal(false);
     }
@@ -48,7 +55,7 @@ export default function Login() {
   return (
     <div className="auth-container">
       <div className="auth-card">
-        <h1>Log in</h1>
+        <h1>Sign up</h1>
 
         <form className="auth-form" onSubmit={handleSubmit}>
           <div className="auth-field">
@@ -73,6 +80,17 @@ export default function Login() {
             />
           </div>
 
+          <div className="auth-field">
+            <span>Confirm password</span>
+            <input
+              type="password"
+              className="auth-input"
+              value={confirm}
+              onChange={(e) => setConfirm(e.target.value)}
+              required
+            />
+          </div>
+
           {error && <p className="auth-error">{error}</p>}
 
           <button
@@ -80,13 +98,13 @@ export default function Login() {
             className="auth-button"
             disabled={loadingLocal}
           >
-            {loadingLocal ? "Logging in..." : "Log in"}
+            {loadingLocal ? "Signing up..." : "Sign up"}
           </button>
         </form>
 
         <p className="auth-switch">
-          Don't have an account?{" "}
-          <Link to="/signup">Sign up</Link>
+          Already have an account?{" "}
+          <Link to="/login">Log in</Link>
         </p>
       </div>
     </div>
