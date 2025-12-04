@@ -1,45 +1,31 @@
 import { useEffect, useState } from "react";
 import "./ItemDetails.css";
-import { fetchUserById } from "../../services/fetchService.js";
 import { useParams, useNavigate } from "react-router-dom";
+import { loadItemById, clearSelectedItem } from "../../features/items/itemSlice.js";
+import { useDispatch, useSelector } from "react-redux";
+
 
 export default function ItemDetails() {
-  const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(false);
-  const [err, setErr] = useState(null);
   const {id} = useParams(); 
-  const navigate = useNavigate(); 
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const {selectedItem, loadingItem, errorItem} = useSelector((state) => state.users); 
 
   useEffect(() => {
-    let cancelled = false;
-
-    async function load() {
-      try {
-        setErr(null);
-        setLoading(true);
-        const data = await fetchUserById(id);
-        if (!cancelled) setUser(data);
-      } catch (e) {
-        if (!cancelled) setErr(e?.message || "Fetch failed");
-      } finally {
-        if (!cancelled) setLoading(false);
-      }
-    }
-
     if (id) {
-      load();
+      dispatch(loadItemById(id));
     }
-
     return () => {
-      cancelled = true;
+      dispatch(clearSelectedItem());
     };
-  }, [id]);
+  }, [id, dispatch]);
+  
 
   function handleBack() {
     navigate(-1);
   }
 
-  if (loading) {
+  if (loadingItem) {
     return (
       <div className="container">
         <section className="card">
@@ -49,18 +35,18 @@ export default function ItemDetails() {
     );
   }
 
-  if (err) {
+  if (errorItem) {
     return (
       <div className="container">
         <section className="card">
-          <p>Error: {err}</p>
+          <p>Error: {errorItem}</p>
           <button onClick={handleBack}>← Back</button>
         </section>
       </div>
     );
   }
 
-  if (!user) {
+  if (!selectedItem) {
     return (
       <div className="container">
         <section className="card">
@@ -71,7 +57,7 @@ export default function ItemDetails() {
     );
   }
 
-  const { name, username, email, phone, website, address, company } = user;
+  const { name, username, email, phone, website, address, company } = selectedItem;
 
   return (
     <div className="container">

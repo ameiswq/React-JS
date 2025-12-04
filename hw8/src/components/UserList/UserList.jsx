@@ -2,30 +2,42 @@ import { useState, useEffect } from "react";
 import UserCard from "../UserCard/UserCard.jsx";
 import "./UserList.css";
 import { useSearchParams, Link } from "react-router-dom";
-import { fetchUsers } from "../../services/fetchService.js";
+import { loadItems, setQuery } from "../../features/items/itemSlice.js";
+import { useDispatch, useSelector } from "react-redux";
 
 export default function UsersList() {
-  const [users, setUsers] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [loaded, setLoaded] = useState(false);
-  const [error, setError] = useState(null);
+  // const [users, setUsers] = useState([]);
+  // const [loading, setLoading] = useState(false);
+  // const [loaded, setLoaded] = useState(false);
+  // const [error, setError] = useState(null);
+  // const [searchParams, setSearchParams] = useSearchParams();
+  // const search = searchParams.get("q") || ""; 
+  const dispatch = useDispatch();
   const [searchParams, setSearchParams] = useSearchParams();
-  const search = searchParams.get("q") || ""; 
+  const {list, loadingList, errorList, query,} = useSelector((state) => state.users);
 
   async function handleLoad() {
-    try {
-      setError(null);
-      setLoading(true);
-      const data = await fetchUsers(); 
-      setUsers(data);
-      setLoaded(true);
-    } catch (err) {
-      console.error(err);
-      setError("Failed to load users");
-    } finally {
-      setLoading(false);
-    }
+    // try {
+    //   setError(null);
+    //   setLoading(true);
+    //   const data = await fetchUsers(); 
+    //   setUsers(data);
+    //   setLoaded(true);
+    // } catch (err) {
+    //   console.error(err);
+    //   setError("Failed to load users");
+    // } finally {
+    //   setLoading(false);
+    // }
+    dispatch(loadItems());
   }
+
+  useEffect(() => {
+    const q = searchParams.get("q") || "";
+    if (q !== query) {
+      dispatch(setQuery(q));
+    }
+  }, [searchParams, query, dispatch]);
 
   function handleSearchChange(e) {
     const value = e.target.value;
@@ -40,13 +52,13 @@ export default function UsersList() {
     setSearchParams({});
   }
   
-  const q = search.trim().toLowerCase();
-  const filteredUsers = q? users.filter(u => {
+  const q = query.trim().toLowerCase();
+  const filteredUsers = q? list.filter(u => {
       const name = u.name.toLowerCase();
       const email = u.email.toLowerCase();
       const city = u.address.city.toLowerCase();
       return name.includes(q) || email.includes(q) || city.includes(q);
-    }): users;
+    }): list;
 
 
     useEffect(() => {
@@ -57,7 +69,7 @@ export default function UsersList() {
         }
         window.addEventListener("keydown", onKeyDown);
         return () => window.removeEventListener("keydown", onKeyDown);
-    }, [search, setSearchParams]);
+    }, [query, setSearchParams]);
 
     useEffect(() => {
         const count = filteredUsers.length;
@@ -68,22 +80,23 @@ export default function UsersList() {
     <section className="users-list">
       <header className="users-list__header">
         <h2 className="users-list__title">Users</h2>
-        <button className="users-list__btn" onClick={handleLoad} disabled={loading}>
-            {loading ? "Loading..." : "Load"}
+        <button className="users-list__btn" onClick={handleLoad} disabled={loadingList}>
+            {loadingList ? "Loading..." : "Load"}
         </button>
       </header>
 
-      {error && (<p className="users-list__error">{error} </p>
-)}
+      {errorList && (<p className="users-list__error">{errorList}</p>)}
       
       <div className="users-list__search">
-        <input type="text" className="users-list__search-input" placeholder="Search by name..." value={search} onChange={handleSearchChange}/>
-        <button className="users-list__clear-btn" onClick={handleClear} disabled={!search}>Clear</button>
+        <input type="text" className="users-list__search-input" placeholder="Search by name..." value={query} onChange={handleSearchChange}/>
+        <button className="users-list__clear-btn" onClick={handleClear} disabled={!query}>Clear</button>
       </div>
 
-      {loaded && filteredUsers.length === 0 && (
+      {!loadingList && filteredUsers.length === 0 && list.length > 0 && (
         <p className="users-list__empty">
-          {search ? "No matches for your search." : "No users found."}
+          {query
+            ? "No matches for your search."
+            : "No users found."}
         </p>
       )}
 
