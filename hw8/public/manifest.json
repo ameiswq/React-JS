@@ -1,0 +1,21 @@
+{
+  "name": "My Progressive Web App",
+  "short_name": "HW9",
+  "description": "An example of a Progressive Web App",
+  "start_url": "/index.html",
+  "display": "standalone",
+  "background_color": "rgba(11,16,32,0.75)",
+  "theme_color": "#0b1020",
+  "icons": [
+    {
+      "src": "/icons/icon1.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/icons/icon1.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
